@@ -24,6 +24,7 @@ namespace Product.Core.Dto
     {
 
         public int Id { get; set; }
+        public string ProductPicture { get; set; }
         public string CategoryName { get; set; }
     }
 
@@ -31,5 +32,14 @@ namespace Product.Core.Dto
     {
         public int CategoryId { get; set; }
         public  IFormFile Image { get; set; }
+    }
+
+    public class UpdateProductDto : BaseProduct
+    {
+
+        public int CategoryId { get; set; }
+        public string OldImage { get; set; }
+        public IFormFile Image { get; set; }
+
     }
 }
