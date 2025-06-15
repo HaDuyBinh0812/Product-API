@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
-
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();

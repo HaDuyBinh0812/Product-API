@@ -4,7 +4,7 @@ using Product.API.Errors;
 
 namespace Product.API.Controllers
 {
-    [Route("eror/[statuscodes]")]
+    [Route("error/[statuscodes]")]
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ErrorController : ControllerBase

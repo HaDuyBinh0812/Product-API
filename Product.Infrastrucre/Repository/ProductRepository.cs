@@ -4,6 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Product.Core.Dto;
 using Product.Core.Entities;
 using Product.Core.Interface;
+using Product.Core.Sharing;
 using Product.Infrastrucre.Data;
 using System;
 using System.Collections.Generic;
@@ -118,6 +119,34 @@ namespace Product.Infrastrucre.Repository
             }
             return false;
         }
-    }
 
+        async Task<ReturnProductDto> IProductRepository.GetAllAsync(ProductParams productParams)
+        {
+            var result_ = new ReturnProductDto();
+            var query = await _context.Products.Include(x => x.Category).AsNoTracking().ToListAsync();
+
+            if (!string.IsNullOrEmpty(productParams.Search))
+                query = query.Where(x => x.Name.ToLower().Contains(productParams.Search)).ToList();
+
+
+            if (productParams.Categoryid.HasValue)
+                query = query.Where(x => x.CategoryId == productParams.Categoryid.Value).ToList();
+
+
+            if (!string.IsNullOrEmpty(productParams.Sorting))
+            {
+                query = productParams.Sorting switch
+                {
+                    "PriceAsc" => query.OrderBy(x => x.Price).ToList(),
+                    "PriceDesc" => query.OrderByDescending(x => x.Price).ToList(),
+                    _ => query.OrderBy(x => x.Name).ToList(),
+                };
+
+            }
+                query = query.Skip((productParams.Pagesize) * (productParams.PageNumber - 1)).Take(productParams.Pagesize).ToList();
+
+                result_.ProductDtos = _mapper.Map<List<ProductDto>>(query);
+                return result_;
+        }
+    }
 }

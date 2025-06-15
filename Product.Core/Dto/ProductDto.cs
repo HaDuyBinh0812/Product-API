@@ -42,4 +42,10 @@ namespace Product.Core.Dto
         public IFormFile Image { get; set; }
 
     }
+
+    public class ReturnProductDto
+    {
+        public int TotalItems { get; set; }
+        public List<ProductDto> ProductDtos { get; set; }
+    }
 }
