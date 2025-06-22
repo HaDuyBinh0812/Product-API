@@ -1,23 +1,25 @@
-﻿namespace Product.API.MyHelper;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.Execution;
 using Product.Core.Dto;
 using Product.Core.Entities;
 
-public class ProductUrlResolver : IValueResolver<Products, ProductDto, string>
+namespace Product.API.MyHelper
 {
-    private readonly IConfiguration _configuration;
+    public class ProductUrlResolver : IValueResolver<Products, ProductDto, string>
+    {
+        private readonly IConfiguration _configuration;
 
-    public ProductUrlResolver(IConfiguration configuration)
-    {
-        _configuration= configuration;
-    }
-    public string Resolve(Products source, ProductDto destination, string destMember, ResolutionContext context)
-    {
-        if (!string.IsNullOrEmpty(source.ProductPicture))
+        public ProductUrlResolver(IConfiguration configuration)
         {
-            return _configuration["API_url"]+source.ProductPicture;
+            _configuration= configuration;
         }
-        return null;
+        public string Resolve(Products source, ProductDto destination, string destMember, ResolutionContext context)
+        {
+            if (!string.IsNullOrEmpty(source.ProductPicture))
+            {
+                return _configuration["API_url"]+source.ProductPicture;
+            }
+            return null;
+        }
     }
 }

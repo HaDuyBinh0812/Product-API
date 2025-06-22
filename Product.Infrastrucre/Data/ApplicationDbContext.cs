@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Product.Core.Entities.Orders;
 
 namespace Product.Infrastrucre.Data
 {
@@ -20,6 +21,11 @@ namespace Product.Infrastrucre.Data
         public virtual DbSet<Products> Products { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+
+        public virtual DbSet<OrderItems> OrderItems { set; get; }
+
+        public virtual DbSet<DeliveryMethod> DeliveryMethods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

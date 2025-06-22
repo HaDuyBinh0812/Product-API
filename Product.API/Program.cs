@@ -1,7 +1,9 @@
 using Microsoft.Extensions.FileProviders;
 using Product.API.Extensions;
 using Product.API.Middleware;
+using Product.Core.Interface;
 using Product.Infrastrucre;
+using Product.Infrastrucre.Repository;
 using StackExchange.Redis;
 using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,8 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
     var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
     return ConnectionMultiplexer.Connect(configure);
 });
+
+builder.Services.AddScoped<IOrderServices, OrderServices>();
 
 var app = builder.Build();
 
