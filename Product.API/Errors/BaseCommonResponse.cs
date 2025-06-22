@@ -2,13 +2,13 @@
 {
     public class BaseCommonResponse
     {
-        public BaseCommonResponse(int stuatusCode, string message = null)
+        public BaseCommonResponse(int statusCode, string message = null)
         {
-            StuatusCode = stuatusCode;
-            Message = message ?? DefaultMessageForSatusCode(stuatusCode);
+            StatusCode = statusCode;
+            Message = message ?? DefaultMessageForSatusCode(statusCode);
         }
-        private string DefaultMessageForSatusCode(int stuatusCode)
-         => stuatusCode switch
+        private string DefaultMessageForSatusCode(int statusCode)
+         => statusCode switch
          {
              400 => "bad request",
              401 => "not authorize",
@@ -18,7 +18,7 @@
          };
 
 
-        public int StuatusCode { get; set; }
+        public int StatusCode { get; set; }
         public string Message { get; set; }
     }
 }

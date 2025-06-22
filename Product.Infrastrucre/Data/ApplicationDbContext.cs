@@ -6,10 +6,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Product.Infrastrucre.Data
 {
-    public class ApplicationDbContext : DbContext 
+    public class ApplicationDbContext : IdentityDbContext<AppUser> 
     {
         public ApplicationDbContext(DbContextOptions options): base(options)
         {
@@ -17,6 +18,8 @@ namespace Product.Infrastrucre.Data
 
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Products> Products { get; set; }
+
+        public DbSet<Address> Addresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

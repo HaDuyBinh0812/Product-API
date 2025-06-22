@@ -2,6 +2,7 @@ using Microsoft.Extensions.FileProviders;
 using Product.API.Extensions;
 using Product.API.Middleware;
 using Product.Infrastrucre;
+using StackExchange.Redis;
 using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddApiReguestration();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.InfraStructureConfigration(builder.Configuration);
+builder.Services.AddSingleton<IConnectionMultiplexer>(i =>
+{
+    var configure = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+    return ConnectionMultiplexer.Connect(configure);
+});
 
 var app = builder.Build();
 
@@ -23,11 +28,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
+app.UseAuthentication();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
-app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
-
+await InfraStructureRequistration.infastructureConfigMiddleware(app);
 app.Run();
